@@ -1,0 +1,490 @@
+/* ============================================================
+   KeyFlow — practice.css
+   Practice screen: session status, compact statistics row,
+   progress bar, dominant next-key prompt, grouped target
+   sequence, typing input, finger guide.
+   Visual priority: timer → current key → sequence → keyboard
+   → statistics.
+   ============================================================ */
+
+.practice {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding-top: 10px;
+}
+
+.practice__topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+/* ---------- session status (subtle) ---------- */
+
+.session-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--color-text-secondary);
+}
+
+.session-status__dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--color-success);
+  animation: status-pulse 1.8s ease-in-out infinite;
+}
+
+@keyframes status-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.3;
+  }
+}
+
+/* ---------- compact statistics row ---------- */
+
+.stats-row {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px 10px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+  padding: 12px 14px 10px;
+}
+
+.stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 2px;
+  text-align: center;
+  min-width: 0;
+}
+
+.stat__label {
+  font-size: 0.66rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--color-text-secondary);
+}
+
+.stat__value {
+  font-family: var(--font-mono);
+  font-size: clamp(1.1rem, 3.4vw, 1.5rem);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  line-height: 1.15;
+  color: var(--color-text);
+}
+
+/* The timer carries the most visual weight of the four cells. */
+.stat--time .stat__value {
+  color: var(--color-primary);
+}
+
+.stats__secondary {
+  grid-column: 1 / -1;
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  font-size: 0.78rem;
+  padding-top: 8px;
+  border-top: 1px dashed var(--color-border);
+}
+
+.stats__ok {
+  color: var(--color-success);
+  font-weight: 600;
+}
+
+.stats__err {
+  color: var(--color-error);
+  font-weight: 600;
+}
+
+/* ---------- session progress ---------- */
+
+.session-progress {
+  grid-column: 1 / -1;
+  height: 6px;
+  border-radius: 999px;
+  background: var(--color-surface-2);
+  overflow: hidden;
+}
+
+.session-progress__fill {
+  display: block;
+  height: 100%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--color-primary), var(--color-primary-dark));
+  transition: width 250ms linear;
+}
+
+/* ---------- practice stage ---------- */
+
+.practice__stage {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  padding: clamp(22px, 4vw, 36px);
+}
+
+/* — "Type this next": the strongest visual element — */
+
+.practice__prompt {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  text-align: center;
+}
+
+.practice__prompt-label {
+  font-size: 0.72rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.22em;
+  color: var(--color-text-secondary);
+}
+
+.practice__prompt-key {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: clamp(76px, 16vw, 104px);
+  height: clamp(76px, 16vw, 104px);
+  padding: 0 14px;
+  border-radius: 20px;
+  background: var(--color-primary);
+  color: #ffffff;
+  font-family: var(--font-mono);
+  font-size: clamp(2.3rem, 8vw, 3.1rem);
+  font-weight: 800;
+  line-height: 1;
+  border-bottom: 5px solid var(--color-primary-dark);
+  box-shadow: 0 14px 34px var(--glow-primary);
+  animation: prompt-pop 220ms ease;
+  transition:
+    background var(--transition-fast),
+    box-shadow var(--transition-fast),
+    border-color var(--transition-fast);
+}
+
+@keyframes prompt-pop {
+  0% {
+    transform: scale(0.82);
+    opacity: 0.45;
+  }
+  60% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.practice__prompt-key--correct {
+  background: var(--color-success);
+  border-bottom-color: var(--color-success-dark);
+  box-shadow: 0 14px 34px var(--glow-success);
+  animation: key-pop 350ms ease;
+}
+
+.practice__prompt-key--incorrect {
+  background: var(--color-error);
+  border-bottom-color: var(--color-error-dark);
+  box-shadow: 0 14px 34px var(--glow-error);
+  animation: key-shake 350ms ease;
+}
+
+@keyframes key-pop {
+  0% {
+    transform: scale(1);
+  }
+  40% {
+    transform: scale(1.09);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes key-shake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-6px);
+  }
+  55% {
+    transform: translateX(6px);
+  }
+  80% {
+    transform: translateX(-3px);
+  }
+}
+
+.practice__prompt-finger {
+  font-size: 0.86rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  color: var(--color-text-secondary);
+}
+
+.practice__unsupported {
+  font-size: 0.85rem;
+  color: var(--color-error);
+  font-weight: 500;
+  background: var(--color-error-soft);
+  border: 1px solid var(--color-error-border);
+  border-radius: 999px;
+  padding: 5px 14px;
+}
+
+/* ---------- target sequence (visual groups, no spaces) ---------- */
+
+.typing-text {
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: clamp(14px, 3vw, 22px) clamp(12px, 3vw, 20px);
+  overflow: hidden;
+  min-height: 72px;
+}
+
+.typing-text__stream {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: baseline;
+  /* row-gap between wrapped lines | column-gap between logical groups */
+  gap: 0.5em 1.2em;
+  font-family: var(--font-mono);
+  font-size: clamp(1.2rem, 3.6vw, 1.6rem);
+  line-height: 1.8;
+}
+
+/* Chars inside one group stay tightly spaced; the wider stream gap
+   creates the visual grouping that replaces literal spaces. */
+.typing-text__group {
+  display: inline-flex;
+  gap: 0.14em;
+}
+
+.char {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: clamp(22px, 5vw, 30px);
+  padding: 2px 3px 6px;
+  border-radius: 8px;
+  position: relative;
+}
+
+/* completed: muted */
+.char--done {
+  color: var(--color-done);
+}
+
+.char--last::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 25%;
+  width: 50%;
+  height: 3px;
+  border-radius: 2px;
+  background: var(--color-success);
+}
+
+/* current: primary highlight */
+.char--current {
+  background: var(--color-primary);
+  color: #ffffff;
+  transform: scale(1.14);
+  box-shadow: 0 8px 18px var(--glow-primary);
+  transition:
+    transform var(--transition-fast),
+    background var(--transition-fast),
+    box-shadow var(--transition-fast);
+}
+
+/* upcoming: normal */
+.char--upcoming {
+  color: var(--color-text);
+}
+
+/* legend */
+
+.typing-legend {
+  display: flex;
+  justify-content: center;
+  gap: 18px;
+  font-size: 0.78rem;
+  color: var(--color-text-secondary);
+}
+
+.typing-legend__item {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.typing-legend__chip {
+  width: 14px;
+  height: 14px;
+  border-radius: 5px;
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+}
+
+.typing-legend__chip--done {
+  background: var(--color-done);
+  border-color: var(--color-done);
+}
+
+.typing-legend__chip--current {
+  background: var(--color-primary);
+  border-color: var(--color-primary);
+}
+
+.typing-legend__chip--upcoming {
+  background: var(--color-surface);
+}
+
+/* ---------- typing input ---------- */
+
+.typing-input {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* Capture-only field: never visible, never edited, evaluation happens
+   on insert so Backspace can't undo already-judged characters. */
+.typing-input__field {
+  position: absolute;
+  opacity: 0;
+  width: 1px;
+  height: 1px;
+  pointer-events: none;
+}
+
+.typing-input__hint {
+  font-size: 0.84rem;
+  color: var(--color-text-secondary);
+  text-align: center;
+}
+
+/* ---------- finger guide (compact, secondary) ---------- */
+
+.finger-guide {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.finger-guide--compact {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: 14px 20px;
+}
+
+.finger-guide__title {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--color-text-secondary);
+  margin-bottom: 8px;
+}
+
+.finger-guide__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4px 18px;
+}
+
+.finger-guide__row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.85rem;
+  color: var(--color-text-secondary);
+}
+
+.finger-guide__key {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 24px;
+  height: 24px;
+  border: 1px solid var(--color-border);
+  border-bottom-width: 2px;
+  border-radius: 6px;
+  background: var(--color-bg);
+  font-family: var(--font-mono);
+  font-weight: 700;
+  font-size: 0.75rem;
+  color: var(--color-text);
+}
+
+.finger-guide__arrow {
+  font-size: 0.7rem;
+}
+
+/* ---------- responsive ---------- */
+
+@media (max-width: 720px) {
+  .practice__stage {
+    padding: 20px 14px 24px;
+  }
+
+  .finger-guide {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .stats-row {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    padding: 10px;
+  }
+
+  .stat__value {
+    font-size: 1.15rem;
+  }
+}
+
+@media (max-width: 360px) {
+  .typing-text__stream {
+    gap: 0.5em 0.85em;
+  }
+
+  .stats__secondary {
+    gap: 12px;
+    font-size: 0.72rem;
+  }
+}

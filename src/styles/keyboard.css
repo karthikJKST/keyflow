@@ -1,0 +1,150 @@
+/* ============================================================
+   KeyFlow — keyboard.css
+   Virtual keyboard: key caps, active state, hit feedback.
+   ============================================================ */
+
+.vkeyboard {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: center;
+  padding: 22px 16px 16px;
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+}
+
+.vkeyboard__row {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.vkeyboard__cell {
+  display: flex;
+  align-items: center;
+}
+
+.vkeyboard__gap {
+  width: 34px;
+}
+
+.vkeyboard__hands {
+  display: flex;
+  justify-content: space-between;
+  width: min(100%, 560px);
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--color-text-secondary);
+}
+
+.vkeyboard__thumbs {
+  width: 120px;
+  height: 10px;
+  border-radius: 999px;
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+}
+
+/* ---------- key ---------- */
+
+.key {
+  appearance: none;
+  border: 1px solid var(--color-border);
+  border-bottom-width: 4px;
+  border-radius: var(--radius-key);
+  background: var(--color-surface);
+  min-width: 56px;
+  height: 60px;
+  padding: 6px 8px 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1px;
+  cursor: default;
+  transition:
+    transform var(--transition-fast),
+    background var(--transition-fast),
+    border-color var(--transition-fast),
+    box-shadow var(--transition-fast),
+    color var(--transition-fast);
+}
+
+.key__cap {
+  font-family: var(--font-mono);
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: var(--color-text);
+  line-height: 1;
+}
+
+.key__finger {
+  font-size: 0.58rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-text-secondary);
+}
+
+.key--active {
+  background: var(--color-primary);
+  border-color: var(--color-primary-dark);
+  border-bottom-color: var(--color-primary-dark);
+  transform: translateY(2px);
+  box-shadow: 0 6px 16px var(--glow-primary);
+}
+
+.key--active .key__cap {
+  color: #ffffff;
+}
+
+.key--active .key__finger {
+  color: rgba(255, 255, 255, 0.85);
+}
+
+/* brief flash after pressing the right key */
+.key--hit {
+  animation: key-hit 300ms ease;
+}
+
+@keyframes key-hit {
+  0% { background: var(--color-success-soft); border-color: var(--color-success); }
+  100% { background: var(--color-surface); border-color: var(--color-border); }
+}
+
+/* ---------- responsive ---------- */
+
+@media (max-width: 560px) {
+  .vkeyboard__gap {
+    width: 18px;
+  }
+
+  .key {
+    min-width: 40px;
+    height: 50px;
+    border-bottom-width: 3px;
+  }
+
+  .key__cap {
+    font-size: 1rem;
+  }
+
+  .key__finger {
+    display: none;
+  }
+
+  .vkeyboard__row {
+    gap: 5px;
+  }
+}
+
+@media (max-width: 360px) {
+  .key {
+    min-width: 33px;
+    height: 44px;
+    padding: 4px 2px 6px;
+  }
+}

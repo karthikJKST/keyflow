@@ -1,0 +1,234 @@
+/* ============================================================
+   KeyFlow — results.css
+   Result screen + confirmation dialog.
+   Accuracy is the primary result.
+   ============================================================ */
+
+.results {
+  display: flex;
+  justify-content: center;
+  padding-top: 28px;
+}
+
+.results__card {
+  width: 100%;
+  max-width: 560px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 18px;
+  padding: 44px 36px 36px;
+}
+
+/* subtle session status: ✓ SESSION COMPLETE */
+.results__status {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--color-success);
+  font-weight: 700;
+  font-size: 0.76rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.results__lede {
+  color: var(--color-text-secondary);
+  font-size: 1rem;
+}
+
+/* ---------- accuracy ring (primary result) ---------- */
+
+.accuracy-ring {
+  width: 190px;
+  height: 190px;
+}
+
+.accuracy-ring__track {
+  fill: none;
+  stroke: var(--color-border);
+  stroke-width: 10;
+}
+
+.accuracy-ring__value {
+  fill: none;
+  stroke: var(--color-primary);
+  stroke-width: 10;
+  transform: rotate(-90deg);
+  transform-origin: 60px 60px;
+  transition: stroke-dasharray 600ms ease;
+}
+
+.accuracy-ring__number {
+  font-size: 26px;
+  font-weight: 800;
+  fill: var(--color-text);
+  text-anchor: middle;
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+}
+
+.accuracy-ring__unit {
+  font-size: 10px;
+  font-weight: 600;
+  fill: var(--color-text-secondary);
+  text-anchor: middle;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+}
+
+/* ---------- stat grid ---------- */
+
+.results__grid {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.result-stat {
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-bg);
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  text-align: left;
+}
+
+.result-stat__label {
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--color-text-secondary);
+}
+
+.result-stat__value {
+  font-family: var(--font-mono);
+  font-size: 1.45rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.result-stat--ok .result-stat__value {
+  color: var(--color-success);
+}
+
+.result-stat--err .result-stat__value {
+  color: var(--color-error);
+}
+
+.results__duration {
+  font-size: 0.88rem;
+  color: var(--color-text-secondary);
+}
+
+/* truthful improvement note — only rendered when a previous session
+   exists AND accuracy genuinely increased */
+.results__note {
+  font-size: 0.88rem;
+  color: var(--color-success);
+  font-weight: 600;
+  background: var(--color-success-soft);
+  border: 1px solid var(--color-success-border);
+  padding: 8px 14px;
+  border-radius: 999px;
+}
+
+.results__actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 6px;
+}
+
+/* ---------- confirm dialog ---------- */
+
+.dialog-overlay {
+  position: fixed;
+  inset: 0;
+  background: var(--overlay);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  z-index: 60;
+  animation: overlay-in 160ms ease;
+}
+
+@keyframes overlay-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.dialog {
+  width: 100%;
+  max-width: 420px;
+  background: var(--color-surface);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-border);
+  box-shadow: var(--shadow-md);
+  padding: 26px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  animation: dialog-in 180ms ease;
+}
+
+@keyframes dialog-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.dialog__title {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--color-text);
+}
+
+.dialog__message {
+  color: var(--color-text-secondary);
+  font-size: 0.94rem;
+}
+
+.dialog__actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+/* ---------- responsive ---------- */
+
+@media (max-width: 520px) {
+  .results__card {
+    padding: 32px 20px 28px;
+  }
+
+  .results__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .results__actions {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .results__actions .btn {
+    width: 100%;
+  }
+}
